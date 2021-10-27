@@ -1,0 +1,43 @@
+digraph configit {
+
+  rankdir="TD"
+
+  label = "Algorhythm: ConfigIt"
+  labelloc = "t"
+
+  node [
+    shape=polygon
+    fontsize=11
+  ]
+
+  edge [
+    arrowhead=normal
+  ]
+
+  r_lc [label = "read local configuration file"]
+  r_lf [label = "read local files"]
+  r_rf [label = "read remote files"]
+
+  start -> r_lc -> r_lf
+  r_lf -> r_rf [label = "error"]
+
+  d_rf [label = "download remote files"]
+  c_rf [label = "create remote files"]
+  c_cs [label = "create configuration section"]
+  s_lp [label = "set local profile"]
+  r_rf -> d_rf -> c_cs -> s_lp -> r_lc
+  r_rf -> c_rf [label = "error"]
+  c_rf -> d_rf
+
+  d_lf [label = "diff local files"]
+  s_dm [
+    label = "decision mode"
+    shape = diamond
+  ]
+  u_lf [label = "update local files"]
+  u_rf [label = "update remote files"]
+
+  r_lf -> d_lf -> s_dm -> u_lf, u_rf -> report -> end
+
+}
+
