@@ -26,3 +26,7 @@ Create `etc.list` and `local.list` in `~/.config/configit` directory. List files
 /etc/example.conf
 ```
 
+You can define more list files using `example = filename` key-values to separate your configuration files as you wish. Just be sure you have created the list file in the `~/.config/configit` configuration directory.
+
+Or you can create and download remote configuration files.
+
