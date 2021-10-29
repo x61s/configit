@@ -9,16 +9,31 @@ home = os.path.expanduser('~')
 configFilePath = home + '/.config/configit/'
 configFileName = 'configit.ini'
 configFile = configFilePath + configFileName
+configDefaultRepo = 'configit-files'
 
 def existLocalConfiguration(configFile):
     return Path(configFile).is_file()
 
-def createLocalConfiguration(configFilePath, configFile):
+def createLocalConfiguration(configFilePath, configFile, repoName):
 
-    Path(configFilePath).mkdir(parents=True)
+    if not Path(configFilePath).is_dir():
+        Path(configFilePath).mkdir(parents=True)
+
     config = configparser.ConfigParser()
-    >> HERE <<
-    # TODO: generate all needed files including example lists programmatically
+    config['profile'] = {}
+    config['profile']['name'] = 'default'
+    config['github'] = {}
+    config['github']['token'] = str(input('Github token? '))
+    config['github']['repo'] = str(input('Repository name [{0}]? '.format(repoName))) or repoName
+    config['default'] = {}
+    config['default']['listname'] = 'my.list'
+    
+    with open(configFile, 'w') as f:
+        config.write(f)
+
+    myList = configFilePath + 'my.list'
+    with open(myList, 'w') as f:
+        f.write(myList)
 
 def readLocalConfiguration(configFile):
 
@@ -59,8 +74,8 @@ def readRemoteConfiguration():
     return False
 
 if not existLocalConfiguration(configFile):
-    print('Local configuration file does not exist.')
-    createLocalConfiguration(configFilePath, configFile)
+    print('Configuration not found...')
+    createLocalConfiguration(configFilePath, configFile, configDefaultRepo)
 
 readLocalConfiguration(configFile)
 
