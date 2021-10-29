@@ -19,6 +19,7 @@ def createLocalConfiguration(configFilePath, configFile, repoName):
     if not Path(configFilePath).is_dir():
         Path(configFilePath).mkdir(parents=True)
 
+    # https://docs.python.org/3/library/configparser.html
     config = configparser.ConfigParser()
     config['profile'] = {}
     config['profile']['name'] = 'default'
@@ -34,6 +35,8 @@ def createLocalConfiguration(configFilePath, configFile, repoName):
     myList = configFilePath + 'my.list'
     with open(myList, 'w') as f:
         f.write(myList)
+
+    print('Configuration complete.' + '\n')
 
 def readLocalConfiguration(configFile):
 
@@ -67,6 +70,8 @@ def readLocalConfiguration(configFile):
         f = open(home + '/.config/configit/{0}'.format(files.get(key)))
         print(f.read())
 
+    return profile, token, repo
+
 def readRemoteConfiguration():
 
     # TODO: if repository has configuration profile uploaded, do nothing
@@ -74,13 +79,18 @@ def readRemoteConfiguration():
     return False
 
 if not existLocalConfiguration(configFile):
+
     print('Configuration not found...')
     createLocalConfiguration(configFilePath, configFile, configDefaultRepo)
+    # TODO: commit profile lists to Github
+    # TODO: check maybe profile already commited
+    # TODO: maybe you want to download additional lists of your profile from Github?
 
-readLocalConfiguration(configFile)
+print (readLocalConfiguration(configFile))
+# >> HERE <<
+# TODO: Save configuraion to repo
 
 readRemoteConfiguration()
 
-# TODO: push files to repository
-# TODO: ask if user wants to download .list files from repository to configuration directory
+# TODO: push files from lists to repository
  
